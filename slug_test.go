@@ -31,6 +31,14 @@ func TestSlugify(t *testing.T) {
 			"Ability Capsule",
 			"ability-capsule",
 		},
+		{
+			"ability-capsule",
+			"ability-capsule",
+		},
+		{
+			"ability_capsule",
+			"ability_capsule",
+		},
 	}
 
 	for _, testCase := range testCases {

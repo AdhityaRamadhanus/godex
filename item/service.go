@@ -1,7 +1,6 @@
 package item
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/AdhityaRamadhanus/godex"
@@ -30,6 +29,5 @@ func NewService(config ServiceConfig) Service {
 
 func (s *service) GetItemByName(name string) (godex.Item, error) {
 	sluggedName := godex.Slugify(name)
-	fmt.Println("Item Name ", sluggedName)
 	return s.client.FindOneByName(sluggedName)
 }

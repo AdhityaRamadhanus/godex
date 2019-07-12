@@ -9,7 +9,11 @@ import (
 	"github.com/AdhityaRamadhanus/godex"
 )
 
-type Client struct {
+type Client interface {
+	FindOneByName(name string) (godex.Item, error)
+}
+
+type client struct {
 	baseURL    string
 	httpClient *http.Client
 }
@@ -28,14 +32,14 @@ type PokeAPIItemResponse struct {
 	} `json:"effect_entries"`
 }
 
-func WithClientTimeout(timeout time.Duration) func(client *Client) {
-	return func(client *Client) {
+func WithClientTimeout(timeout time.Duration) func(client *client) {
+	return func(client *client) {
 		client.httpClient.Timeout = timeout
 	}
 }
 
-func NewClient(baseURL string, options ...func(*Client)) *Client {
-	client := &Client{
+func NewClient(baseURL string, options ...func(*client)) Client {
+	client := &client{
 		baseURL:    baseURL,
 		httpClient: &http.Client{},
 	}
@@ -46,7 +50,7 @@ func NewClient(baseURL string, options ...func(*Client)) *Client {
 	return client
 }
 
-func (c *Client) FindOneByName(name string) (godex.Item, error) {
+func (c client) FindOneByName(name string) (godex.Item, error) {
 	url := fmt.Sprintf("%s/item/%s", c.baseURL, name)
 	resp, err := c.httpClient.Get(url)
 	if err != nil {
@@ -58,7 +62,7 @@ func (c *Client) FindOneByName(name string) (godex.Item, error) {
 	}
 
 	if resp.StatusCode != 200 {
-		return godex.Item{}, err
+		return godex.Item{}, ErrUnknownError
 	}
 
 	decodedResponse := &PokeAPIItemResponse{}

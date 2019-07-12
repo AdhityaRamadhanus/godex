@@ -10,10 +10,10 @@ func Slugify(text string) string {
 	wordsLowerCased := []string{}
 	for _, word := range strings.Split(text, " ") {
 		regex, _ := regexp.Compile("[a-zA-Z0-9]+")
-		matchedString := regex.FindString(word)
+		matchedStrings := regex.FindAllString(word, -1)
 
-		if len(matchedString) > 0 {
-			wordsLowerCased = append(wordsLowerCased, strings.ToLower(matchedString))
+		if len(matchedStrings) > 0 {
+			wordsLowerCased = append(wordsLowerCased, strings.ToLower(strings.Join(matchedStrings, "")))
 		}
 	}
 

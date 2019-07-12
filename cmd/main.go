@@ -9,6 +9,17 @@ import (
 	"github.com/urfave/cli"
 )
 
+var (
+	apiBaseURL  = "https://pokeapi.co/api/v2"
+	itemService item.Service
+)
+
+func init() {
+	itemService = item.NewService(item.ServiceConfig{
+		APIBaseURL: apiBaseURL,
+	})
+}
+
 func main() {
 	// Init Config
 	app := cli.NewApp()
@@ -24,13 +35,8 @@ func main() {
 
 		args := strings.Join(c.Args(), " ")
 
-		itemService := item.NewService(item.ServiceConfig{
-			APIBaseURL: "https://pokeapi.co/api/v2",
-		})
-
 		item, err := itemService.GetItemByName(args)
-		if err != nil {
-			fmt.Println(err)
+		if err != nil && err != item.ErrItemNotFound {
 			fmt.Println("Sorry, encountering problem")
 			os.Exit(1)
 		}

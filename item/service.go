@@ -15,19 +15,19 @@ type ServiceConfig struct {
 }
 
 type service struct {
-	client *Client
+	Client Client
 }
 
 func NewService(config ServiceConfig) Service {
 	return &service{
-		client: NewClient(
+		Client: NewClient(
 			config.APIBaseURL,
 			WithClientTimeout(5*time.Second),
 		),
 	}
 }
 
-func (s *service) GetItemByName(name string) (godex.Item, error) {
+func (s service) GetItemByName(name string) (godex.Item, error) {
 	sluggedName := godex.Slugify(name)
-	return s.client.FindOneByName(sluggedName)
+	return s.Client.FindOneByName(sluggedName)
 }

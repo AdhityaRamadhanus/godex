@@ -69,13 +69,6 @@ func (c client) FindOneByName(name string) (godex.Item, error) {
 	decodedResponse := &PokeAPIItemResponse{}
 	json.NewDecoder(resp.Body).Decode(&decodedResponse)
 
-	itemEnglishName := decodedResponse.Name
-	for _, name := range decodedResponse.Names {
-		if name.Language.Name == "en" {
-			itemEnglishName = name.Name
-			break
-		}
-	}
 	itemEffects := []string{}
 	for _, itemEffect := range decodedResponse.EffectEntries {
 		effect := strings.Replace(itemEffect.Effect, "\n", "", -1)
@@ -83,7 +76,7 @@ func (c client) FindOneByName(name string) (godex.Item, error) {
 	}
 
 	item := godex.Item{
-		Name:    itemEnglishName,
+		Name:    decodedResponse.Name,
 		Cost:    decodedResponse.Cost,
 		Effects: itemEffects,
 	}

@@ -19,5 +19,10 @@ func (p Pokemon) String() string {
 	for idx, ability := range p.Abilities {
 		abilities += fmt.Sprintf("%d. %v\n", (idx + 1), ability)
 	}
-	return fmt.Sprintf(format, p.ID, p.Name, strings.Join(p.Types, " - "), abilities)
+
+	types := []string{}
+	for _, pokemonType := range p.Types {
+		types = append(types, Capitalize(pokemonType, "-"))
+	}
+	return fmt.Sprintf(format, p.ID, Capitalize(p.Name, "-"), strings.Join(types, " - "), abilities)
 }

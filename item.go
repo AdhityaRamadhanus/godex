@@ -17,5 +17,5 @@ func (i Item) String() string {
 	for idx, effect := range i.Effects {
 		effects += fmt.Sprintf("%d. %s\n", (idx + 1), effect)
 	}
-	return fmt.Sprintf(format, i.Name, i.Cost, effects)
+	return fmt.Sprintf(format, Capitalize(i.Name, "-"), i.Cost, effects)
 }

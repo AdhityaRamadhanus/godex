@@ -15,7 +15,7 @@ func (a Ability) String() string {
 	for _, effect := range a.Effects {
 		effects += fmt.Sprintf("- %s\n", effect)
 	}
-	return fmt.Sprintf(format, a.Name, effects)
+	return fmt.Sprintf(format, Capitalize(a.Name, "-"), effects)
 }
 
 type Abilities []Ability

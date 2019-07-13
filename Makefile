@@ -1,6 +1,6 @@
 .PHONY: default test run build build-image
 
-export HEAD_COMMIT_SHA1            ?= $(shell git show -q --format=%h)
+export HEAD_COMMIT_SHA1 ?= $(shell git show -q --format=%h)
 OS := $(shell uname)
 VERSION ?= 1.0.0
 

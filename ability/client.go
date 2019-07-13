@@ -21,7 +21,7 @@ type client struct {
 	httpClient *http.Client
 }
 
-type PokeAPIAbilityResponse struct {
+type pokeAPIAbilityResponse struct {
 	ID            int    `json:"id"`
 	Name          string `json:"name"`
 	EffectEntries []struct {
@@ -62,7 +62,7 @@ func (c client) FindOneByID(id int) (godex.Ability, error) {
 		return godex.Ability{}, ErrUnknownError
 	}
 
-	decodedResponse := &PokeAPIAbilityResponse{}
+	decodedResponse := &pokeAPIAbilityResponse{}
 	json.NewDecoder(resp.Body).Decode(&decodedResponse)
 
 	abilityEffects := []string{}

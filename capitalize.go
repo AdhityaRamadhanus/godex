@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-//Slugify return a human readable slug of a text
+//Capitalize return string capitalized with specific separator
 func Capitalize(text string, separator string) string {
 	wordsCapitalized := []string{}
 	for _, word := range strings.Split(text, separator) {

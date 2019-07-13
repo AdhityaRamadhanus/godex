@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+//Item domain entity representing https://pokeapi.co/docs/v2.html/#items-section
 type Item struct {
 	Effects []string
 	Name    string

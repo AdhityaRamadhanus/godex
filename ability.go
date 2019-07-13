@@ -2,6 +2,7 @@ package godex
 
 import "fmt"
 
+//Ability domain entity representing https://pokeapi.co/docs/v2.html/#abilities
 type Ability struct {
 	ID      int
 	Name    string

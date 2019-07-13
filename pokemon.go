@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+//Pokemon domain entity representing https://pokeapi.co/docs/v2.html/#pokemon-section
 type Pokemon struct {
 	Abilities Abilities
 	Name      string

@@ -19,7 +19,7 @@ type client struct {
 	httpClient *http.Client
 }
 
-type PokeAPIItemResponse struct {
+type pokeAPIItemResponse struct {
 	Name  string `json:"name"`
 	Names []struct {
 		Name     string `json:"name"`
@@ -66,7 +66,7 @@ func (c client) FindOneByName(name string) (godex.Item, error) {
 		return godex.Item{}, ErrUnknownError
 	}
 
-	decodedResponse := &PokeAPIItemResponse{}
+	decodedResponse := &pokeAPIItemResponse{}
 	json.NewDecoder(resp.Body).Decode(&decodedResponse)
 
 	itemEffects := []string{}

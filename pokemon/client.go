@@ -20,7 +20,7 @@ type client struct {
 	httpClient *http.Client
 }
 
-type PokeAPIPokemonResponse struct {
+type pokeAPIPokemonResponse struct {
 	ID    int    `json:"id"`
 	Name  string `json:"name"`
 	Types []struct {
@@ -69,7 +69,7 @@ func (c client) FindOneByName(name string) (godex.Pokemon, error) {
 		return godex.Pokemon{}, ErrUnknownError
 	}
 
-	decodedResponse := &PokeAPIPokemonResponse{}
+	decodedResponse := &pokeAPIPokemonResponse{}
 	json.NewDecoder(resp.Body).Decode(&decodedResponse)
 
 	pokemonTypes := []string{}

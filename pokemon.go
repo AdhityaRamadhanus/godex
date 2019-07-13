@@ -17,8 +17,7 @@ func (p Pokemon) String() string {
 
 	var abilities string
 	for idx, ability := range p.Abilities {
-		abilities += fmt.Sprintf("%d. %s\n", (idx + 1), ability.Name)
-		abilities += fmt.Sprintf("%d\n\n", ability.ID)
+		abilities += fmt.Sprintf("%d. %v\n\n", (idx + 1), ability)
 	}
 	return fmt.Sprintf(format, p.ID, p.Name, strings.Join(p.Types, " - "), abilities)
 }

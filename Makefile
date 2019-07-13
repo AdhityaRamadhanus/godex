@@ -4,7 +4,7 @@ export HEAD_COMMIT_SHA1 ?= $(shell git show -q --format=%h)
 OS := $(shell uname)
 VERSION ?= 1.0.0
 
-build-image: test
+build-image:
 	docker build -t godex:$(HEAD_COMMIT_SHA1) .;
 
 run-image:

@@ -15,6 +15,7 @@ Ability
 
 <p>
   <a href="#installation">Installation |</a>
+  <a href="#installation-with-docker">Installation (with docker) |</a>
   <a href="#Usage">Usage |</a>
   <a href="#licenses">License</a>
   <br><br>
@@ -26,11 +27,25 @@ Ability
 Installation
 ----------- 
 * go get github.com/AdhityaRamadhanus/godex
+* cd to project dir
 * run build
 ```bash
-make
+make build
 ```
 * run ./godex
+
+Installation With Docker
+----------- 
+* go get github.com/AdhityaRamadhanus/godex
+* cd to project dir
+* run build image
+```bash
+docker build -t godex .
+```
+* run ./godex
+```bash
+docker run -it godex [pokemon/item name]
+```
 
 Usage
 -----

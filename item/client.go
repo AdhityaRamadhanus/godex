@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/AdhityaRamadhanus/godex"
@@ -77,8 +78,10 @@ func (c client) FindOneByName(name string) (godex.Item, error) {
 	}
 	itemEffects := []string{}
 	for _, itemEffect := range decodedResponse.EffectEntries {
-		itemEffects = append(itemEffects, itemEffect.Effect)
+		effect := strings.Replace(itemEffect.Effect, "\n", "", -1)
+		itemEffects = append(itemEffects, effect)
 	}
+
 	item := godex.Item{
 		Name:    itemEnglishName,
 		Cost:    decodedResponse.Cost,

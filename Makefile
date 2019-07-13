@@ -12,7 +12,7 @@ run-image:
 
 # target #
 
-default: run
+default: test build
 
 run:
 	go run cmd/main.go

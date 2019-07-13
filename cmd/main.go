@@ -6,16 +6,21 @@ import (
 	"strings"
 
 	"github.com/AdhityaRamadhanus/godex/item"
+	"github.com/AdhityaRamadhanus/godex/pokemon"
 	"github.com/urfave/cli"
 )
 
 var (
-	apiBaseURL  = "https://pokeapi.co/api/v2"
-	itemService item.Service
+	apiBaseURL     = "https://pokeapi.co/api/v2"
+	itemService    item.Service
+	pokemonService pokemon.Service
 )
 
 func init() {
 	itemService = item.NewService(item.ServiceConfig{
+		APIBaseURL: apiBaseURL,
+	})
+	pokemonService = pokemon.NewService(pokemon.ServiceConfig{
 		APIBaseURL: apiBaseURL,
 	})
 }
@@ -26,6 +31,8 @@ func main() {
 	app.Name = "godex"
 	app.Author = "Adhitya Ramadhanus"
 	app.Email = "adhitya.ramadhanus@gmail.com"
+	app.Usage = "godex [pokemon/item name]"
+	app.Version = "0.0.0"
 
 	app.Action = func(c *cli.Context) error {
 		if c.NArg() == 0 {
@@ -35,19 +42,32 @@ func main() {
 
 		args := strings.Join(c.Args(), " ")
 
-		item, err := itemService.GetItemByName(args)
+		foundItem, err := itemService.GetItemByName(args)
 		if err != nil && err != item.ErrItemNotFound {
 			fmt.Println("Sorry, encountering problem")
-			os.Exit(1)
+			return err
 		}
 
-		fmt.Println("Item", item.Name)
-		fmt.Println("Cost", item.Cost)
-		fmt.Println("Entries", item.Effects)
-		return nil
+		if err == nil {
+			fmt.Println(foundItem)
+			return nil
+		}
+
+		// can't find item, move to search pokemon
+		foundPokemon, err := pokemonService.GetPokemonByName(args)
+
+		switch err {
+		case pokemon.ErrPokemonNotFound:
+			err = nil
+			fmt.Println("Sorry, we could not find any item or pokemon with that name")
+		case nil:
+			fmt.Println(foundPokemon)
+		default:
+			fmt.Println("Sorry, encountering problem")
+		}
+
+		return err
 	}
-	app.Usage = "godex cli"
-	app.Version = "0.0.0"
 
 	if err := app.Run(os.Args); err != nil {
 		fmt.Println(err)

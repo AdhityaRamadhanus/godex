@@ -32,7 +32,6 @@ func init() {
 }
 
 func main() {
-	// Init Config
 	app := cli.NewApp()
 	app.Name = "godex"
 	app.Author = "Adhitya Ramadhanus"
@@ -51,7 +50,7 @@ func main() {
 		foundItem, err := itemService.GetItemByName(args)
 		if err != nil && err != item.ErrItemNotFound {
 			fmt.Println("Sorry, encountering problem")
-			return err
+			return nil
 		}
 
 		if err == nil {
@@ -95,8 +94,5 @@ func main() {
 		return err
 	}
 
-	if err := app.Run(os.Args); err != nil {
-		fmt.Println(err)
-		os.Exit(0)
-	}
+	app.Run(os.Args)
 }

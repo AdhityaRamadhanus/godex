@@ -1,7 +1,14 @@
-.PHONY: default test build
+.PHONY: default test run build build-image
 
+export HEAD_COMMIT_SHA1            ?= $(shell git show -q --format=%h)
 OS := $(shell uname)
 VERSION ?= 1.0.0
+
+build-image: test
+	docker build -t godex:$(HEAD_COMMIT_SHA1) .;
+
+run-image:
+	docker run -it godex:$(HEAD_COMMIT_SHA1) $(ARG);
 
 # target #
 
@@ -10,7 +17,7 @@ default: run
 run:
 	go run cmd/main.go
 
-build: 
+build: test
 	@echo "Setup godex"
 ifeq ($(OS),Linux)
 	@echo "Build godex..."
@@ -23,6 +30,5 @@ endif
 	@echo "Succesfully Build for ${OS} version:= ${VERSION}"
 
 # Test Packages
-
 test:
 	go test -v --cover ./...

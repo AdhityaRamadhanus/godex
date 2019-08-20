@@ -7,28 +7,17 @@ import (
 	"testing"
 	"time"
 
+	"github.com/AdhityaRamadhanus/httpstub"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestFindOneById(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
-		switch url := req.URL.String(); url {
-		case "/ability/140":
-			jsonResponseBytes, _ := ioutil.ReadFile("../test/json/item.json")
-			res.Header().Set("Content-Type", "application/json; charset=utf-8")
-			res.WriteHeader(200)
-			res.Write(jsonResponseBytes)
-		case "/ability/1000000":
-			res.Header().Set("Content-Type", "text/plain; charset=utf-8")
-			res.WriteHeader(404)
-			res.Write([]byte("Not Found"))
-		default:
-			res.Header().Set("Content-Type", "text/plain; charset=utf-8")
-			res.WriteHeader(500)
-			res.Write([]byte("Internal Server Error"))
-		}
-	}))
-	defer server.Close()
+	srv := httpstub.Server{}
+	srv.StubRequest(http.MethodGet, "/ability/140", httpstub.WithResponseBodyJSONFile("../test/json/item.json"))
+	srv.StubRequest(http.MethodGet, "/ability/1000000", httpstub.WithResponseCode(http.StatusNotFound))
+	srv.StubRequest(http.MethodGet, "/ability/-1", httpstub.WithResponseCode(http.StatusInternalServerError))
+	srv.Start()
+	defer srv.Close()
 
 	testCases := []struct {
 		AbilityID           int
@@ -53,7 +42,7 @@ func TestFindOneById(t *testing.T) {
 	}
 
 	client := NewClient(
-		server.URL,
+		srv.URL(),
 		WithClientTimeout(5*time.Second),
 	)
 
